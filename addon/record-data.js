@@ -517,7 +517,7 @@ export default class FragmentRecordData extends RecordData {
   }
 
   pushData(data, calculateChange) {
-    let changedFragmentKeys;
+    let changedFragmentKeys = [];
     if (data.attributes) {
       // copy so that we don't mutate the caller's data
       const attributes = Object.assign({}, data.attributes);
@@ -534,9 +534,13 @@ export default class FragmentRecordData extends RecordData {
 
         const current = this._fragmentData[key];
         newCanonicalFragments[key] = behavior.pushData(current, canonical);
+        // if you get here, the fragment has new data inside that we want to notify
+        // NB: this is consistent with behavior from previous versions of fragments.
+        // see: https://github.com/adopted-ember-addons/ember-data-model-fragments/blob/v5.0.0-beta.1/addon/record-data.js#L227-L229
+        changedFragmentKeys.push(key);
       }
       if (calculateChange) {
-        changedFragmentKeys = this._changedFragmentKeys(newCanonicalFragments);
+        changedFragmentKeys = mergeArrays(changedFragmentKeys, this._changedFragmentKeys(newCanonicalFragments));
       }
       Object.assign(this._fragmentData, newCanonicalFragments);
     }
