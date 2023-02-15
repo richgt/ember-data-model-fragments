@@ -384,7 +384,7 @@ export default class FragmentRecordData extends RecordData {
     assert(`Attribute '${key}' for model '${this.modelName}' must be a fragment`, behavior != null);
     const originalValue = key in this._inFlightFragments ? this._inFlightFragments[key] : this._fragmentData[key];
     const isDirty = behavior.isDirty(value, originalValue);
-    const oldDirty = this.isFragmentDirty(key);
+    const oldDirty = originalValue === null || this.isFragmentDirty(key);
     if (isDirty !== oldDirty) {
       this.notifyStateChange(key);
     }
