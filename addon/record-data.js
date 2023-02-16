@@ -403,6 +403,10 @@ export default class FragmentRecordData extends RecordData {
       `Attribute '${key}' for model '${this.modelName}' must not be a fragment`,
       this._fragmentBehavior[key] == null
     );
+    if (!this._fragmentOwner) {
+      super.setDirtyAttribute(key, value);
+      return;
+    }
     const oldDirty = this.isAttrDirty(key);
     super.setDirtyAttribute(key, value);
 
