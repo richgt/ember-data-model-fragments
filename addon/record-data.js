@@ -143,8 +143,8 @@ class FragmentArrayBehavior {
     );
 
     if (canonical === null) {
-      // push replaced fragment array with null
-      return null;
+      // push replaced fragment array with empty array
+      return [];
     }
 
     // merge the fragment array with the pushed data
@@ -180,8 +180,8 @@ class FragmentArrayBehavior {
     if (canonical == null) {
       fragmentArray?.forEach(fragment => fragment._fragmentDidCommit(null));
       if (canonical === null) {
-        // server replaced fragment array with null
-        return null;
+        // server replaced fragment array with null, replace with empty array
+        return [];
       }
       // server confirmed in-flight fragments
       return fragmentArray;
