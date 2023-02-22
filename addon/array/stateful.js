@@ -57,6 +57,7 @@ const StatefulArray = EmberObject.extend(MutableArray, Copyable, {
     } else {
       this._hasNotified = true;
       this.notifyPropertyChange('[]');
+      this.notifyPropertyChange('length');
       this.notifyPropertyChange('firstObject');
       this.notifyPropertyChange('lastObject');
     }
