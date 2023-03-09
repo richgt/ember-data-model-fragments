@@ -4,6 +4,7 @@ import StatefulArray from './stateful';
 import { isFragment, setFragmentOwner } from '../fragment';
 import isInstanceOfType from '../util/instance-of-type';
 import { recordDataFor } from '@ember-data/store/-private';
+import FragmentRecordData from '../record-data';
 
 /**
   @module ember-data-model-fragments
@@ -52,6 +53,9 @@ const FragmentArray = StatefulArray.extend({
       const recordData = recordDataFor(data);
       setFragmentOwner(data, this.recordData, this.key);
       return recordData;
+    }
+    if (data instanceof FragmentRecordData) {
+      return data;
     }
     const existing = this.objectAt(index);
     if (existing) {

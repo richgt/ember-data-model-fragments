@@ -154,7 +154,9 @@ class FragmentArrayBehavior {
         fragment._fragmentPushData({ attributes });
         return fragment;
       } else {
-        return this.recordData._newFragmentRecordData(this.definition, attributes);
+        const newFragment = this.recordData._newFragmentRecordData(this.definition, attributes);
+        this.recordData._fragmentArrayCache[this.definition.name]?.addObject(newFragment);
+        return newFragment;
       }
     });
   }
