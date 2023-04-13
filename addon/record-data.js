@@ -278,7 +278,10 @@ class ArrayBehavior {
     if (canonical === null) {
       return null;
     }
-    return canonical.slice();
+
+    const newArray = canonical.slice();
+    this.recordData._fragmentArrayCache[this.definition.name]?.setObjects(newArray);
+    return newArray;
   }
 
   willCommit(array) {
