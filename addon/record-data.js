@@ -400,7 +400,7 @@ export default class FragmentRecordData extends RecordData {
       delete this._fragments[key];
       this.fragmentDidReset();
     }
-    // this._fragmentArrayCache[key]?.notify();
+    this._fragmentArrayCache[key]?.notify();
   }
 
   setDirtyAttribute(key, value) {
