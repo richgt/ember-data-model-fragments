@@ -40,6 +40,26 @@ const InternalModelPrototype = InternalModel.prototype;
   @namespace DS
 */
 Store.reopen({
+  /**
+   * this is a required change for Ember Data 4.0. In 4.0, we lose a call to `createSnapshot`,
+   * in `scheduleSave` that existed in 3.28. If you create a record without a fragment that has
+   * a default value, and then save without editing the fragment, you'll get an error that you
+   * tried to run `didCommit` on an object that was not `inFlight`. This is because in 3.28, the
+   * call to `scheduleSave` ran a `createSnapshot` that goes through and gets all attributes,
+   * causing the defaultValue to be applied. This function just gets all keys for fragments
+   * at instantiation time to make sure default values have been applied.
+   */
+  instantiateRecord(identifier, createRecordArgs, recordDataFor, notificationManager) {
+    const record = this._super(identifier, createRecordArgs, recordDataFor, notificationManager);
+    const recordData = recordDataFor(identifier);
+    const behaviorMap = recordData._fragmentBehavior;
+    Object.keys(behaviorMap).forEach((key) => {
+      record[key];
+    });
+    return record;
+
+  },
+
   createRecordDataFor(type, id, lid, storeWrapper) {
     let identifier;
     if (lte('ember-data', '3.13.0')) {
